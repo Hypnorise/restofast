@@ -1,5 +1,4 @@
 <script setup>
-import {ref} from "vue";
 const props = defineProps(['menuItems']);
 const emit = defineEmits(['menuClick']);
 
@@ -10,7 +9,7 @@ const emit = defineEmits(['menuClick']);
         <ul>
             <li :class="[(item=='separator')?'separator':'menu-item']"
                 v-for="item in menuItems">
-                <a v-if="!(item == 'separator')" @click="$emit('menuClick',item.id)"
+                <a v-if="!(item == 'separator')" @click.prevent="$emit('menuClick',item.id)"
                    href="#">{{item.text}}</a>
             </li>
         </ul>
@@ -18,5 +17,10 @@ const emit = defineEmits(['menuClick']);
 </template>
 
 <style scoped>
-
+#main_menu {
+	a {
+		text-decoration : none;
+		color : inherit;
+	}
+}
 </style>

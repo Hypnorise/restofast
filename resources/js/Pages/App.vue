@@ -1,8 +1,9 @@
 <script setup>
 import {ref} from "vue";
-import {Products} from "../../../public/js/modules/models/Products.js";
+import {products} from "../../../public/js/modules/models/Products.js";
 import MainMenu from "@/Pages/Components/MainMenu.vue";
 import ProductList from "@/Pages/Components/ProductList.vue";
+import CategoriesList from "@/Pages/Components/CategoriesList.vue";
 
 let Menu = {
 	items: [
@@ -41,14 +42,23 @@ function setActiveMenu(id) {
 }
 
 const productList= ref([]);
-Products.get().then((products)=>{productList.value=products.values()})
+const categoriesList= ref([]);
+products.get().then((products)=>{productList.value=products.values()})
+
 </script>
 
 <template>
     <MainMenu :menuItems="Menu.items" @menuClick="setActiveMenu"/>
-	<ProductList v-if="Menu.getActiveMenu().slug==='counter'" :productList/>
+	<main>
+		<section >
+			<CategoriesList />
+			<ProductList v-if="Menu.getActiveMenu().slug==='counter'" :productList/>
+		</section>
+		<section>
+
+		</section>
+	</main>
 </template>
 
-<style scoped>
-
+<style>
 </style>
