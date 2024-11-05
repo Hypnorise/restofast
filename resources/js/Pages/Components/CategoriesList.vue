@@ -1,6 +1,6 @@
 <script setup>
-const props = ['categoriesList'];
-const emit = ['categoryChanged'];
+const props = defineProps(['categoriesList']);
+const emit = defineEmits(['categoryChanged']);
 
 
 </script>
