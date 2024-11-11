@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class TablesController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Product::with('category')->where('deleted',0)->get();
     }
 
     /**
@@ -28,15 +30,14 @@ class TablesController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        return $product->load('category');
     }
 
     /**
@@ -50,9 +51,14 @@ class TablesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,Product $product)
     {
-        //
+		if (!$request->anyFilled(['name','price'])) respondJson(false,'Please fill all required fields');
+        if ($product->hasOrder == 1) {
+	        $newProduct = Product::create($product->all());
+	        $newProduct->update($request->all());
+        }
+
     }
 
     /**
@@ -62,8 +68,4 @@ class TablesController extends Controller
     {
         //
     }
-	public function toggleActive(Table $table)
-	{
-		$table->free = !$table->free;
-	}
 }

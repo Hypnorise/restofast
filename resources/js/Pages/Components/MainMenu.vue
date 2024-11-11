@@ -20,6 +20,9 @@ const emit = defineEmits(['menuClick']);
 
 <style scoped>
 #main_menu {
+	.menu-item.active {
+		text-decoration : underline;
+	}
 	a {
 		text-decoration : none;
 		color           : inherit;

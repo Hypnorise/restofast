@@ -1,0 +1,122 @@
+body {
+  background-color: #e5e5f7;
+  /*opacity: 0.8;*/
+  background-image: radial-gradient(#444cf7 0.65px, #e5e5f7 0.65px);
+  background-size: 13px 13px;
+}
+
+.__xq_msgbox {
+  font-family: sans-serif;
+  padding: 0.5px;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  opacity: 0;
+  animation: __xq_msgbox_fadein 0.4s forwards;
+}
+.__xq_msgbox .__msgbox_window {
+  background-color: #fff;
+  margin-top: 5%;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  transform: scale(0.8);
+  animation: __xq_msgbox_zoomin 0.2s forwards 0.1s;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_header, .__xq_msgbox .__msgbox_window .__msgbox_body, .__xq_msgbox .__msgbox_window .__msgbox_footer {
+  padding: 1.5rem;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_header {
+  background-color: #0e333b;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_header button {
+  background: none;
+  color: #ffffff;
+  border: none;
+  transform: scale(2.5);
+  cursor: pointer;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_header button:hover {
+  color: #e84747;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_footer {
+  background-color: #ddd;
+  padding: 1rem;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_footer button {
+  padding: 0.3rem 0.6rem;
+  margin-right: 0.5rem;
+  border: 3px solid #216d7c;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.3s;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_footer button:hover {
+  background: #eee;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_footer button.default {
+  color: #fff;
+  background: #216d7c;
+}
+.__xq_msgbox .__msgbox_window .__msgbox_footer button.default:hover {
+  background: #257e8f;
+}
+
+.__xq_msgbox_close {
+  animation-name: __xq_msgbox_fadeout;
+  animation-duration: 0.3s;
+}
+.__xq_msgbox_close .__msgbox_window {
+  animation-name: __xq_msgbox_zoomout;
+  animation-duration: 0.2s;
+  animation-delay: 0s;
+}
+
+@keyframes __xq_msgbox_fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes __xq_msgbox_fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes __xq_msgbox_zoomin {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes __xq_msgbox_zoomout {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.8);
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

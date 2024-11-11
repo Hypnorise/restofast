@@ -2,13 +2,14 @@
 import {ref} from "vue";
 import {products} from "../../../public/js/modules/models/Products.js";
 import {categories} from "../../../public/js/modules/models/Categories.js";
-import MainMenu from "@/Pages/Components/MainMenu.vue";
-import ProductList from "@/Pages/Components/ProductList.vue";
-import CategoriesList from "@/Pages/Components/CategoriesList.vue";
+import {tables} from "../../../public/js/modules/models/Tables.js"
+import {Model} from "../../../public/js/modules/Model.js";
+import Menu from "@/Pages/Components/MainMenu.vue";
 import TableList from "@/Pages/Components/TableList.vue";
+import AddOrder from "@/Pages/AddOrder.vue";
 
-let Menu = {
-	items: [
+let MainMenu = {
+	items: ref([
 		{
 			id: 0,
 			slug: "counter",
@@ -24,48 +25,57 @@ let Menu = {
 			text: "Settings",
 			iconClass: ''
 		}
-	],
+	]),
 	setActive: function (id) {
-		console.log(this)
-		for (let item of this.items) {
-		    if (item == "separator") continue;
-		    item.active = item.id === id;
+		for (let item of this.items.value) {
+			if (item == "separator") continue;
+			item.active = item.id === id;
 		}
 	},
-	getActiveMenu: function (){
-		for (let item of this.items) {
+	getActiveMenu: function () {
+		for (let item of this.items.value) {
 			if (item == "separator") continue;
 			if (item.active) return item
 		}
 	}
 }
 function setActiveMenu(id) {
-	Menu.setActive(id)
+	MainMenu.setActive(id)
 }
 
-const productList= ref([]);
-products.get().then((products)=>productList.value=products.values())
-const categoriesList= ref([]);
-categories.get().then((categories)=>categoriesList.value=categories.values())
+
+const productList = ref([]);
+products.get().then((products) => productList.value = products.values())
+const categoryList = ref([]);
+categories.get().then((categories) => categoryList.value = categories.values())
+const tableList = ref([]);
+tables.get().then((tables) => tableList.value = tables.values())
+class Tables_withOrders extends Model {
+}
+let tables_withOrders = new Tables_withOrders;
+const tablesWithOrders = ref([]);
+tables_withOrders.get(null).then((tables) => tablesWithOrders.value = tables.values())
 
 </script>
 
 <template>
-    <MainMenu :menuItems="Menu.items" @menuClick="setActiveMenu"/>
-	<main>
-		<section >
-			<CategoriesList :categoriesList/>
-			<ProductList v-if="Menu.getActiveMenu().slug==='counter'" :productList/>
+	<Menu :menuItems="MainMenu.items.value" @menuClick="setActiveMenu"/>
+	<main v-if="MainMenu.getActiveMenu().slug==='counter'">
+		<section>
+			<CategoryList :categoryList/>
 		</section>
 		<section>
-			<TableList/>
+			<TableList :table-list="tablesWithOrders"/>
+		</section>
+		<section>
+			<AddOrder :productList :categoryList/>
 		</section>
 	</main>
 </template>
 
 <style>
 section {
-	border: 1px solid black;
+	border : 1px solid black;
 	margin : 0.5rem;
 }
 </style>

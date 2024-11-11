@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\TablesController;
-use App\Models\Product;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,12 +13,21 @@ Route::get('/', function () {
 });
 
 Route::prefix('api')->group(function () {
-    Route::resource('products', ProductsController::class);
+    Route::resource('products', ProductController::class);
 
-	Route::get('categories/withProducts/{category?}',[CategoriesController::class,'withProducts']);
-    Route::resource('categories', CategoriesController::class);
+	Route::get('categories/withproducts/{category?}',[CategoryController::class,'withProducts']);
+    Route::resource('categories', CategoryController::class);
 
-	Route::get('tables/toggleActive/{table}',[TablesController::class,'toggleActive']);
-    Route::resource('tables', TablesController::class);
+	Route::get('tables/withorders/{table?}', [TableController::class,'withOrders']);
+	Route::get('tables/toggleActive/{table}',[TableController::class,'toggleActive']);
+    Route::resource('tables', TableController::class);
 
+	Route::get('orders/withproducts/{order?}', [OrderController::class,'withProducts']);
+	Route::resource('orders', OrderController::class);
 });
+
+function respondJson($success=true,$text='',$code=200)
+{
+	$message['message'] = ['success'=>$success,'text'=>$text];
+	return response()->json($message,$code);
+}

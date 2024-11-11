@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Product::all();
+	    return Category::all();
     }
 
     /**
@@ -34,9 +35,9 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Category $category)
     {
-        return $product;
+        return $category;
     }
 
     /**
@@ -62,4 +63,10 @@ class ProductsController extends Controller
     {
         //
     }
+
+	public function withProducts(Category $category = null)
+	{
+		if ($category == null) return Category::with('products')->get();
+		return $category->load('products');
+	}
 }

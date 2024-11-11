@@ -41,7 +41,7 @@ class TransformApiResponse
 		$result = ['data' => null, 'metadata' => null];
 		$coll = collect($data);
 		if ($coll->has('data')) {
-			$result['metadata'] = $coll->except('data');
+			$result['metadata'] = $coll->except(['data','message']);
 			$result['data'] = collect($data['data'])->keyBy('id');
 			return $result;
 		}
