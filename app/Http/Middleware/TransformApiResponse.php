@@ -38,6 +38,7 @@ class TransformApiResponse
 	 */
 	private function transform($data)
 	{
+//		return $data;
 		$result = ['data' => null, 'metadata' => null];
 		$coll = collect($data);
 		if ($coll->has('data')) {

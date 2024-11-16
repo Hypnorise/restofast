@@ -8,6 +8,15 @@ import Menu from "@/Pages/Components/MainMenu.vue";
 import TableList from "@/Pages/Components/TableList.vue";
 import AddOrder from "@/Pages/AddOrder.vue";
 
+//region Default Requests
+const productObj = ref(null);
+products.get().then((products) => productObj.value = products.source)
+const categoryList = ref([]);
+categories.get().then((categories) => categoryList.value = categories.values())
+const tableList = ref([]);
+tables.get().then((tables) => tableList.value = tables.values());
+//endregion
+
 let MainMenu = {
 	items: ref([
 		{
@@ -43,39 +52,57 @@ function setActiveMenu(id) {
 	MainMenu.setActive(id)
 }
 
-
-const productList = ref([]);
-products.get().then((products) => productList.value = products.values())
-const categoryList = ref([]);
-categories.get().then((categories) => categoryList.value = categories.values())
-const tableList = ref([]);
-tables.get().then((tables) => tableList.value = tables.values())
 class Tables_withOrders extends Model {
 }
+
 let tables_withOrders = new Tables_withOrders;
 const tablesWithOrders = ref([]);
-tables_withOrders.get(null).then((tables) => tablesWithOrders.value = tables.values())
+tables_withOrders.get(null).then((tables) => tablesWithOrders.value = tables.source)
 
+const activeTable = ref(null);
+function addOrder(tableId) {
+	activeTable.value = tablesWithOrders.value[tableId]
+}
+function saveOrder() {
+
+}
 </script>
 
 <template>
-	<Menu :menuItems="MainMenu.items.value" @menuClick="setActiveMenu"/>
-	<main v-if="MainMenu.getActiveMenu().slug==='counter'">
-		<section>
+	<main>
+		<Menu :menuItems="MainMenu.items.value" @menuClick="setActiveMenu"/>
+		<section v-if="MainMenu.getActiveMenu().slug==='counter'"
+				 class="counter">
 			<CategoryList :categoryList/>
-		</section>
-		<section>
-			<TableList :table-list="tablesWithOrders"/>
-		</section>
-		<section>
-			<AddOrder :productList :categoryList/>
+			<TableList :table-list="tablesWithOrders" @addOrder="addOrder"/>
 		</section>
 	</main>
+	<section>
+		<AddOrder v-if="activeTable!==null" :categoryList :products="productObj" :table="activeTable"
+				  @categoryChanged="changeCategory" @close="activeTable=null"
+				  @saveOrder="saveOrder"/>
+	</section>
 </template>
 
 <style>
-section {
-	border : 1px solid black;
+nav, section {
+	border : 1px solid #000;
 	margin : 0.5rem;
+}
+article {
+	border : 1px solid #777;
+	margin : 0.5rem;
+}
+main {
+	display : flex;
+}
+.counter {
+	flex-grow : 1;
+}
+
+#mainMenu {
+	width     : 20%;
+	min-width : 5rem;
+	max-width : 10rem;
 }
 </style>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -12,7 +13,7 @@ class OrderController extends Controller
 	 */
 	public function index()
 	{
-		//
+		return Order::all();
 	}
 
 	/**
@@ -28,7 +29,31 @@ class OrderController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//
+
+		if ($request->isNotFilled("products")) return respondJson(false, "No products", 400);
+		if ($request->isNotFilled("table_id")) return respondJson(false, "No table", 400);
+
+		DB::beginTransaction();
+
+		try {
+			$ref = makeOrderRef();
+			$newOrder = new Order();
+			$newOrder->table_id = $request->input('table_id');
+			$newOrder->ref = $ref;
+			if ($request->filled("comment")) $newOrder->comment = $request->input("comment");
+			$newOrder->amount = 0;
+			$newOrder->save();
+			$newOrder->refresh();
+			$products = $request->collect("products")->mapWithKeys(function (array $item, int $key) {
+				return [$item['id'] => ['quantity'=> $item['quantity']]];
+			});
+			$newOrder->products()->attach($products);
+
+			return "";
+		} catch (\Exception $e) {
+			DB::rollBack();
+			return $e->getMessage();
+		}
 	}
 
 	/**

@@ -28,7 +28,7 @@ class TableController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//
+		return makeOrderRef();
 	}
 
 	/**
@@ -86,10 +86,8 @@ class TableController extends Controller
 //				echo "<hr>";
 //			}
 //		dd($tableWithOrders);
+
 		return $tableWithOrders;
 
-		return $table->load(['orders' => function ($query) {
-			$query->where('order_state_id', 1);
-		}]);
 	}
 }

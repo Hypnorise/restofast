@@ -6,7 +6,7 @@ const emit = defineEmits(['menuClick']);
 </script>
 
 <template>
-	<section id="main_menu">
+	<nav id="mainMenu">
 		<ul>
 			<li v-for="item in menuItems"
 				:class="[(item=='separator')?'separator':'menu-item',
@@ -15,11 +15,11 @@ const emit = defineEmits(['menuClick']);
 				   @click.prevent="$emit('menuClick',item.id)">{{ item.text }}</a>
 			</li>
 		</ul>
-	</section>
+	</nav>
 </template>
 
 <style scoped>
-#main_menu {
+#mainMenu {
 	.menu-item.active {
 		text-decoration : underline;
 	}

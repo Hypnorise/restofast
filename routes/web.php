@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return view('app');
@@ -30,4 +31,12 @@ function respondJson($success=true,$text='',$code=200)
 {
 	$message['message'] = ['success'=>$success,'text'=>$text];
 	return response()->json($message,$code);
+}
+function makeOrderRef()
+{
+	$d = now()->format('D');
+	$d = Str::upper($d);
+	$d = Str::limit($d,2,"");
+	$d .= now()->format('ymdHis');
+	return $d;
 }
