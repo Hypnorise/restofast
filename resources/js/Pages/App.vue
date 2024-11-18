@@ -63,8 +63,8 @@ const activeTable = ref(null);
 function addOrder(tableId) {
 	activeTable.value = tablesWithOrders.value[tableId]
 }
-function saveOrder() {
-
+function saveOrder(obj) {
+	console.log(obj)
 }
 </script>
 

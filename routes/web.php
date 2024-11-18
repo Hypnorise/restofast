@@ -12,6 +12,9 @@ Route::get('/', function () {
 //    return Product::paginate();
 //    return Product::all();
 });
+Route::get('/uploadCSV',function (){
+	return view('uploadCSV');
+});
 
 Route::prefix('api')->group(function () {
     Route::resource('products', ProductController::class);
